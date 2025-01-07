@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
   title: "Plura",
-  description: "All in one Agency Solution",
+  description: "Tudo em um só lugar",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
