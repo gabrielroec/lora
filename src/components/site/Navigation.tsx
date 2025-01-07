@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { User } from "@clerk/nextjs/server";
 import Image from "next/image";
 import logo from "../../../public/assets/plura-logo.svg";
@@ -11,8 +12,27 @@ interface Props {
 }
 
 const Navigation = ({ user }: Props) => {
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setHasScrolled(true);
+      } else {
+        setHasScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="p-4 flex items-center justify-between relative">
+    <div
+      className={`p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-10 transition-all ${
+        hasScrolled ? "bg-background/80 backdrop-blur-md border-b" : ""
+      }`}
+    >
       <aside className="flex items-center gap-2">
         <Image src={logo} alt="logo" height={50} width={50} />
         <span className="text-xl font-bold">Plura</span>
