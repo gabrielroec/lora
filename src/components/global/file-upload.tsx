@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FileIcon, X } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 interface FileUploadProps {
   apiEndpoint: "agencyLogo" | "avatar" | "subaccoungLogo";
@@ -39,7 +40,19 @@ const FileUpload = ({ apiEndpoint, onChange, value }: FileUploadProps) => {
       </div>
     );
   }
-  return <div className="w-full bg-muted/30"></div>;
+  return (
+    <div className="w-full bg-muted/30">
+      <UploadDropzone
+        endpoint={apiEndpoint as any}
+        onClientUploadComplete={(res) => {
+          onChange(res?.[0].url);
+        }}
+        onUploadError={(error: Error) => {
+          console.log(error);
+        }}
+      />
+    </div>
+  );
 };
 
 export default FileUpload;
