@@ -1,5 +1,6 @@
 import { getAuthUserDetails } from "@/lib/queries";
 import React from "react";
+import MenuOptions from "./MenuOptions";
 
 interface SidebarProps {
   id: string;
@@ -23,7 +24,7 @@ const sidebar = async ({ id, type }: SidebarProps) => {
 
   if (!isWhiteLabelAgency) {
     if (type === "subaccount") {
-      sideBarLogo = user?.Agency.SubAccount.find((subaccount) => subaccount.id === id)?.subAccountLogo || user.Agency.agencyLogo;
+      sidebarLogo = user?.Agency.SubAccount.find((subaccount) => subaccount.id === id)?.subAccountLogo || user.Agency.agencyLogo;
     }
   }
 
@@ -38,8 +39,16 @@ const sidebar = async ({ id, type }: SidebarProps) => {
 
   return (
     <>
-      <MenuOptions />
-      <MenuOptions />
+      <MenuOptions
+        defaultOpen={true}
+        subAccounts={subaccount}
+        sidebarOpt={sideBarOpt}
+        sidebarLogo={sidebarLogo}
+        details={details}
+        user={user}
+        id={id}
+      />
+      <MenuOptions subAccounts={subaccount} sidebarOpt={sideBarOpt} sidebarLogo={sidebarLogo} details={details} user={user} id={id} />
     </>
   );
 };
