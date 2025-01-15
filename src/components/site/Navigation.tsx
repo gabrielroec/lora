@@ -7,12 +7,28 @@ import logo from "../../../public/assets/plura-logo.svg";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "../global/mode-toggle";
+import { getAuthUserDetails } from "@/lib/queries";
+import { Loader } from "lucide-react";
 interface Props {
   user?: null | User;
 }
 
 const Navigation = ({ user }: Props) => {
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [authUser, setAuthUser] = useState<string | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setIsLoading(true);
+      const userDetails = await getAuthUserDetails();
+      console.log(userDetails);
+      setAuthUser(userDetails?.email);
+      setIsLoading(false);
+    };
+
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +63,7 @@ const Navigation = ({ user }: Props) => {
       </nav>
       <aside className="flex gap-2 items-center">
         <Link href={"/agency"} className="bg-primary text-white p-2 px-4 rounded-md hover:bg-primary/80">
-          Login
+          {isLoading ? <Loader className="animate-spin" /> : authUser ? "Entrar na agência" : "Fazer login"}
         </Link>
         <UserButton />
         <ModeToggle />
